@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { ContactForm } from './components/ContactForm';
 import { ContactList } from './components/ContactList';
+import { NavBar } from './components/Nav';
 import { IContact } from './data/contacts';
 import { apiFetchAllContacts } from './data/contacts';
 import { contactsReducer } from './data/contacts/contactsReducer';
@@ -27,6 +28,7 @@ const App = () => {
 
     return (
         <>
+            <NavBar contacts={contacts} dispatch={dispatch} />
             <div className="App container">
                 <ContactForm onContactAdd={handleContactAdd} />
                 <ContactList contacts={contacts} dispatch={dispatch} showActions={true} />       

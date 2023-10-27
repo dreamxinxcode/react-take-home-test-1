@@ -35,3 +35,8 @@ export interface IContactDeleteProps {
     onDelete: (contact: IContact) => void;
     onCancel: () => void; 
 }
+
+export interface INavProps {
+    contacts: IContact[];
+    dispatch: React.Dispatch<{ type: string; payload: any }>;
+}
