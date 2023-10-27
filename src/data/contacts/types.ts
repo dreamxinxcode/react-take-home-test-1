@@ -8,9 +8,30 @@ export interface IContact {
 
 export interface IContactCardProps {
     contact: IContact;
+    onEdit: (contact: IContact) => void;
+    onDelete: (id: string) => void;
+    showActions: boolean;
 }
 
 export interface IContactListProps {
     contacts: IContact[];
+    dispatch: React.Dispatch<any>;
+    showActions: boolean;
 }
 
+export interface IContactFormProps {
+    onContactAdd: (newContact: IContact) => void;
+}
+
+export interface IContactEditProps {
+    contact: IContact;
+    onSave: (contact: IContact) => void;
+    onCancel: () => void; 
+    dispatch: React.Dispatch<{ type: string; payload: any }>;
+}
+
+export interface IContactDeleteProps {
+    contact: IContact;
+    onDelete: (contact: IContact) => void;
+    onCancel: () => void; 
+}
