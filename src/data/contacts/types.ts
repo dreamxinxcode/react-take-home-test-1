@@ -5,3 +5,12 @@ export interface IContact {
     age?: number;
     email?: string;
 }
+
+export interface IContactCardProps {
+    contact: IContact;
+}
+
+export interface IContactListProps {
+    contacts: IContact[];
+}
+
