@@ -20,7 +20,7 @@ export interface IContactListProps {
 }
 
 export interface IContactFormProps {
-    onContactAdd: (newContact: IContact) => void;
+    dispatch: React.Dispatch<{ type: string; payload: any }>;
 }
 
 export interface IContactEditProps {

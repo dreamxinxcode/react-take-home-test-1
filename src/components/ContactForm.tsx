@@ -7,7 +7,7 @@ import { apiAddContact } from '../data/contacts/api';
 import { generateUUID } from '../util/guid';
 import { IContactFormProps } from '../data/contacts/types';
 
-export const ContactForm: React.FC<IContactFormProps> = ({ onContactAdd }) => {
+export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
   const initialValues = {
     name: '',
     phone: '',
@@ -22,14 +22,14 @@ export const ContactForm: React.FC<IContactFormProps> = ({ onContactAdd }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-
-    // Reset validation state when the input changes
-    setValidated(false);
+    setValidated(false); // Reset validation state
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    
     const form = event.currentTarget as HTMLFormElement;
+    
     setValidated(true);
   
     if (form.checkValidity() === false) {
@@ -45,8 +45,8 @@ export const ContactForm: React.FC<IContactFormProps> = ({ onContactAdd }) => {
   
       setIsLoading(true);
   
-      await apiAddContact(contact);
-      onContactAdd(contact);
+      // Use the dispatch prop to add the new contact
+      dispatch({ type: 'ADD_CONTACT', payload: contact });
   
       setFormData(initialValues);
     } catch (error) {
@@ -54,7 +54,7 @@ export const ContactForm: React.FC<IContactFormProps> = ({ onContactAdd }) => {
     } finally {
       setIsLoading(false);
     }
-  };  
+  };
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
