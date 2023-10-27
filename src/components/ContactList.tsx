@@ -4,10 +4,12 @@ import { ContactEdit } from './ContactEdit';
 import { ContactDelete } from './ContactDelete';
 import { apiDeleteContact, apiUpdateContact } from '../data/contacts';
 import { IContact, IContactListProps } from '../data/contacts/types';
+import { useNotification } from './NotificationContext';
 
 export const ContactList: React.FC<IContactListProps> = ({ contacts, dispatch, showActions }) => {
   const [editingContact, setEditingContact] = useState<IContact | null>(null);
   const [deletingContact, setDeletingContact] = useState<IContact | null>(null);
+  const { showNotification } = useNotification();
 
   const handleEdit = (contact: IContact) => {
     setEditingContact(contact);
@@ -23,8 +25,9 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts, dispatch, s
     try {
       await apiUpdateContact(editedContact);
       dispatch({ type: 'EDIT_CONTACT', payload: editedContact });
+      showNotification(`${editedContact.name} saved successfully!`, 'success');
     } catch (error) {
-      console.error(error);
+      showNotification(`Oops! There was a problem updating ${editedContact.name}.`, 'danger');
     }
     setEditingContact(null);
   };
@@ -33,8 +36,9 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts, dispatch, s
     try {
       await apiDeleteContact(contact.id);
       dispatch({ type: 'DELETE_CONTACT', payload: contact.id });
+      showNotification(`${contact.name} deleted successfully!`, 'success');
     } catch (error) {
-      console.error(error);
+      showNotification(`Oops! There was a problem deleting ${contact.name}.`, 'danger');
     }
     setDeletingContact(null);
   };

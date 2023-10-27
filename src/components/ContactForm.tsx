@@ -3,9 +3,9 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-import { apiAddContact } from '../data/contacts/api';
 import { generateUUID } from '../util/guid';
 import { IContactFormProps } from '../data/contacts/types';
+import { useNotification } from './NotificationContext';
 
 export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
   const initialValues = {
@@ -18,6 +18,7 @@ export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
   const [formData, setFormData] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+  const { showNotification } = useNotification(); 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -47,10 +48,11 @@ export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
   
       // Use the dispatch prop to add the new contact
       dispatch({ type: 'ADD_CONTACT', payload: contact });
-  
+      showNotification('Contact added successfully.', 'success');
+
       setFormData(initialValues);
     } catch (error) {
-      console.error(error);
+        showNotification('Oops! There was a problem saving your contact.', 'danger');
     } finally {
       setIsLoading(false);
     }
