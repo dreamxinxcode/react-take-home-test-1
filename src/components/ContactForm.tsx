@@ -8,56 +8,59 @@ import { IContactFormProps } from '../data/contacts/types';
 import { useNotification } from './NotificationContext';
 
 export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
-  const initialValues = {
-    name: '',
-    phone: '',
-    email: '',
-    age: '',
-  };
+    const initialValues = {
+        name: '',
+        phone: '',
+        email: '',
+        age: '',
+    };
 
-  const [formData, setFormData] = useState(initialValues);
-  const [isLoading, setIsLoading] = useState(false);
-  const [validated, setValidated] = useState(false);
-  const { showNotification } = useNotification(); 
+    const [formData, setFormData] = useState(initialValues);
+    const [isLoading, setIsLoading] = useState(false);
+    const [validated, setValidated] = useState(false);
+    const { showNotification } = useNotification(); 
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-    setValidated(false); // Reset validation state
-  };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+    // Reset validation state on input change
+    setValidated(false);
+    };
+
+    const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    
+
+    // Validate form inputs
     const form = event.currentTarget as HTMLFormElement;
-    
-    setValidated(true);
-  
     if (form.checkValidity() === false) {
-      return;
+        setValidated(true);
+        return;
     }
-  
+
     try {
-      const contact = {
+        const contact = {
         id: generateUUID(),
         ...formData,
         age: parseInt(formData.age, 10),
-      };
-  
-      setIsLoading(true);
-  
-      // Use the dispatch prop to add the new contact
-      dispatch({ type: 'ADD_CONTACT', payload: contact });
-      showNotification('Contact added successfully.', 'success');
+        };
 
-      setFormData(initialValues);
+        setIsLoading(true);
+
+        // Use the dispatch prop to add the new contact
+        dispatch({ type: 'ADD_CONTACT', payload: contact });
+        showNotification('Contact added successfully.', 'success');
+
+        // Reset form and validation state on successful submission
+        setFormData(initialValues);
+        setValidated(false);
     } catch (error) {
         showNotification('Oops! There was a problem saving your contact.', 'danger');
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
-
+    };
+    
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <FloatingLabel label="Name" controlId="nameControl" className="mb-3">
