@@ -19,7 +19,7 @@ const App = () => {
                 showNotification('Oops! There was a problem fetching your contacts.', 'danger');
             }
         })();
-    }, []);
+    }, [showNotification]);
 
     return (
         <>
