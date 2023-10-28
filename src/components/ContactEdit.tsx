@@ -79,7 +79,7 @@ export const ContactEdit: React.FC<IContactEditProps> = ({ contact, onSave, onCa
                 {isSaving ? (
                     <>
                         <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                        Saving...
+                        <span> Saving...</span>
                     </>
                 ) : (
                     'Save'
