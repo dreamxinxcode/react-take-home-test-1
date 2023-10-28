@@ -43,14 +43,6 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts, dispatch, s
     setDeletingContact(null);
   };
 
-  const handleCancelEdit = () => {
-    setEditingContact(null);
-  };
-
-  const handleCancelDelete = () => {
-    setDeletingContact(null);
-  };
-
   return (
     <div>
       {contacts &&
@@ -66,7 +58,7 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts, dispatch, s
               <ContactEdit
                 contact={contact}
                 onSave={handleSaveEdit}
-                onCancel={handleCancelEdit}
+                onCancel={() => setEditingContact(null)}
                 dispatch={dispatch}
               />
             )}
@@ -74,7 +66,7 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts, dispatch, s
               <ContactDelete
                 contact={contact}
                 onDelete={handleConfirmDelete}
-                onCancel={handleCancelDelete}
+                onCancel={() => setDeletingContact(null)}
               />
             )}
           </div>
