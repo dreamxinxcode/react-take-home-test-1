@@ -6,6 +6,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { generateUUID } from '../util/guid';
 import { IContactFormProps } from '../data/contacts/types';
 import { useNotification } from './NotificationContext';
+import { apiAddContact } from '../data/contacts';
 
 export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
     const initialValues = {
@@ -40,14 +41,15 @@ export const ContactForm: React.FC<IContactFormProps> = ({ dispatch }) => {
 
     try {
         const contact = {
-        id: generateUUID(),
-        ...formData,
-        age: parseInt(formData.age, 10),
+            id: generateUUID(),
+            ...formData,
+            age: parseInt(formData.age, 10),
         };
 
         setIsLoading(true);
 
         // Use the dispatch prop to add the new contact
+        await apiAddContact(contact);
         dispatch({ type: 'ADD_CONTACT', payload: contact });
         showNotification('Contact added successfully.', 'success');
 

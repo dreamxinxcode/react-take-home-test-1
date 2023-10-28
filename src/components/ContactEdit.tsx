@@ -5,12 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import { IContactEditProps } from '../data/contacts/types';
-import { useNotification } from './NotificationContext';
 
 export const ContactEdit: React.FC<IContactEditProps> = ({ contact, onSave, onCancel, dispatch }) => {
     const [editedContact, setEditedContact] = useState(contact);
     const [isSaving, setIsSaving] = useState(false);
-    const { showNotification } = useNotification();
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -19,18 +17,11 @@ export const ContactEdit: React.FC<IContactEditProps> = ({ contact, onSave, onCa
 
     const handleSave = async () => {
         setIsSaving(true);
-        try {
-            await onSave(editedContact);
-            dispatch({ type: 'UPDATE_CONTACT', payload: editedContact });
-            showNotification(`${editedContact.name} saved successfully.`, 'success');
-        } catch (error) {
-            showNotification(`Oops! There was a problem saving ${editedContact.name}.`, 'danger');
-        } finally {
-            setIsSaving(false);
-            onCancel();
-        }
+        await onSave(editedContact);
+        setIsSaving(false);
+        onCancel();
     };
-
+    
     return (
         <Modal show={true}>
             <Modal.Header closeButton>
@@ -87,8 +78,8 @@ export const ContactEdit: React.FC<IContactEditProps> = ({ contact, onSave, onCa
                 <Button variant="primary" onClick={handleSave}>
                 {isSaving ? (
                     <>
-                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                    Saving...
+                        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                        Saving...
                     </>
                 ) : (
                     'Save'

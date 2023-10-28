@@ -9,13 +9,8 @@ export const ContactDelete: React.FC<IContactDeleteProps> = ({ contact, onDelete
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    try {
-      await onDelete(contact);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsDeleting(false);
-    }
+    await onDelete(contact);
+    setIsDeleting(false);
   };
 
   return (
